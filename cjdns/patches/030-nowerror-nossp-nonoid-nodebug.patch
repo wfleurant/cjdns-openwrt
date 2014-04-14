@@ -1,7 +1,16 @@
 diff --git a/node_build/make.js b/node_build/make.js
-index 6f25afa..8c22c20 100644
+index 6f25afa..d08800d 100644
 --- a/node_build/make.js
 +++ b/node_build/make.js
+@@ -56,7 +56,7 @@ Builder.configure({
+         '-std=c99',
+         '-Wall',
+         '-Wextra',
+-        '-Werror',
++//        '-Werror',
+         '-Wno-pointer-sign',
+         '-pedantic',
+         '-D',builder.config.systemName + '=1',
 @@ -66,9 +66,9 @@ Builder.configure({
          // Broken GCC patch makes -fstack-protector-all not work
          // workaround is to give -fno-stack-protector first.
@@ -9,30 +18,22 @@ index 6f25afa..8c22c20 100644
 -        '-fno-stack-protector',
 -        '-fstack-protector-all',
 -        '-Wstack-protector',
-+        //'-fno-stack-protector',
-+        //'-fstack-protector-all',
-+        //'-Wstack-protector',
++//        '-fno-stack-protector',
++//        '-fstack-protector-all',
++//        '-Wstack-protector',
  
          '-D','HAS_BUILTIN_CONSTANT_P',
  
-@@ -80,15 +80,16 @@ Builder.configure({
-         // f8 = 241 peers max, fixed width 8 bit
-         // v3x5x8 = 256 peers max, variable width, 3, 5 or 8 bits plus 1 or 2 bits of prefix
-         // v4x8 = 256 peers max, variable width, 4, or 8 bits plus 1 bit prefix
--        '-D',' NumberCompress_TYPE=v3x5x8',
-+        '-D',' NumberCompress_TYPE=v3x5x8'
+@@ -84,9 +84,10 @@ Builder.configure({
  
          // disable for speed, enable for safety
--        '-D','Identity_CHECK=1',
+         '-D','Identity_CHECK=1',
 -        '-D','Allocator_USE_CANARIES=1',
 -        '-D','PARANOIA=1'
-+        //'-D','Identity_CHECK=1',
-+        //'-D','Allocator_USE_CANARIES=1',
-+        //'-D','PARANOIA=1'
++        '-D','Allocator_USE_CANARIES=1'
++       // '-D','PARANOIA=1'
      );
++    process.env['Log_LEVEL'] = 'INFO';
      var logLevel = process.env['Log_LEVEL'] || 'DEBUG';
      builder.config.cflags.push('-D','Log_'+logLevel);
-+    process.env['NO_PIE'] = 'true';
      if (process.env['NO_PIE'] === undefined) {
-         builder.config.cflags.push('-fPIE');
-     }
